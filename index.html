@@ -9,13 +9,13 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     body, html {
       width: 100%;
       height: 100%;
-      background-color: #000;
+      background-color: #111;
       color: #0f0;
       overflow: hidden;
       user-select: none;
@@ -50,7 +50,7 @@
       );
     }
 
-    /* Breach Container */
+    /* Breach Container (Hacker Screen) */
     #breach-screen {
       position: relative;
       z-index: 3;
@@ -61,6 +61,7 @@
       height: 100vh;
       padding: 20px;
       text-align: center;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     .alert-title {
@@ -84,7 +85,6 @@
       letter-spacing: 2px;
     }
 
-    /* Terminal logs */
     .terminal-window {
       width: 100%;
       max-width: 550px;
@@ -108,7 +108,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Progress bar */
     .progress-container {
       width: 100%;
       max-width: 550px;
@@ -147,87 +146,6 @@
       display: none;
     }
 
-    /* Educational Reveal Screen */
-    #reveal-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0f172a;
-      color: #f8fafc;
-      z-index: 20;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      overflow-y: auto;
-    }
-
-    .reveal-card {
-      background: #1e293b;
-      border: 2px solid #3b82f6;
-      border-radius: 16px;
-      padding: 35px 25px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.25);
-      animation: fadeIn 1s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal-icon {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-    }
-
-    .reveal-title {
-      font-size: 1.8rem;
-      color: #38bdf8;
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
-
-    .main-message {
-      font-size: 1.25rem;
-      line-height: 1.6;
-      color: #ffffff;
-      background: rgba(59, 130, 246, 0.15);
-      border-left: 4px solid #3b82f6;
-      padding: 16px;
-      margin: 20px 0;
-      text-align: left;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .rules-list {
-      text-align: left;
-      margin-top: 20px;
-      list-style: none;
-    }
-
-    .rules-list li {
-      margin-bottom: 14px;
-      font-size: 0.95rem;
-      color: #cbd5e1;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      line-height: 1.4;
-    }
-
-    .rules-list li span {
-      color: #38bdf8;
-      font-weight: bold;
-    }
-
     /* Screen Shake animation */
     .shake {
       animation: shake-anim 0.08s infinite;
@@ -241,6 +159,171 @@
       80% { transform: translate(2px, -1px) rotate(0.5deg); }
       100% { transform: translate(0px, 0px) rotate(0deg); }
     }
+
+    /* ========================================================
+       REVEAL SCREEN (Diseño Original de la Imagen) 
+       ======================================================== */
+    #reveal-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #171717; /* Gris muy oscuro */
+      color: #ffffff;
+      z-index: 20;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+
+    .reveal-content {
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .shield-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #10b981;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #10b981;
+    }
+
+    .main-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #10b981;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .lesson-box {
+      background-color: #3b2c10;
+      border-left: 6px solid #eab308;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    .lesson-title {
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lesson-text {
+      color: #fef3c7;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .rules-section-title {
+      align-self: flex-start;
+      color: #9ca3af;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .rules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .rule-card {
+      background-color: #262626;
+      border: 1px solid #404040;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .rule-icon {
+      font-size: 1.2rem;
+    }
+
+    .rule-text {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #d4d4d8;
+    }
+
+    .rule-text strong {
+      color: #ffffff;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .btn-primary {
+      background-color: #10b981;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #059669;
+    }
+
   </style>
 </head>
 <body>
@@ -251,7 +334,7 @@
   <!-- Glitch Lines Overlay -->
   <div class="screen-effects"></div>
 
-  <!-- Attack Simulation Screen -->
+  <!-- Hacker Attack Screen -->
   <div id="breach-screen">
     <div class="alert-title">⚠️ ¡VIRUS LOADING! ⚠️</div>
     <div class="sub-title">ACCEDIENDO AL DISPOSITIVO...</div>
@@ -269,23 +352,49 @@
   <!-- Blackout Screen (3 segundos de suspense) -->
   <div id="blackout"></div>
 
-  <!-- Educational Reveal Screen (Pantalla final limpia y colorida) -->
+  <!-- Pantalla Final Educativa (Igual a tu imagen) -->
   <div id="reveal-screen">
-    <div class="reveal-card">
-      <div class="reveal-icon">🛡️</div>
-      <div class="reveal-title">¡Tranquilidad! Es solo una simulación.</div>
+    <div class="reveal-content">
       
-      <div class="main-message">
-        <strong>Consejo de Tutoría:</strong><br>
-        No entres a sitios web, enlaces ni escanees códigos QR de origen desconocido.
+      <div class="shield-icon">🛡️</div>
+      <h1 class="main-title">¡TRANQUILO/A! Es solo una simulación 😉</h1>
+      <h2 class="subtitle">Actividad educativa de Tutoría sobre Ciberseguridad</h2>
+
+      <div class="lesson-box">
+        <div class="lesson-title">⚠️ La lección principal de hoy:</div>
+        <div class="lesson-text">
+          <span>⚠️</span> 
+          <span>NUNCA escanees códigos QR ni abras enlaces desconocidos en lugares públicos o remitentes no fidedignos.</span>
+        </div>
       </div>
 
-      <ul class="rules-list">
-        <li><span>1.</span> <strong>Verifica la URL:</strong> Comprueba siempre la dirección web antes de hacer clic o introducir datos.</li>
-        <li><span>2.</span> <strong>Cuidado con los QR:</strong> No escanees códigos colgados en la calle o compartidos sin contexto confiable.</li>
-        <li><span>3.</span> <strong>Protege tus datos:</strong> Ninguna página legítima te pedirá contraseñas de forma imprevista.</li>
-        <li><span>4.</span> <strong>Pide ayuda:</strong> Si dudas de la seguridad de un sitio, consúltalo con un profesor o adulto de confianza.</li>
-      </ul>
+      <div class="rules-section-title">Reglas de oro para proteger tu móvil y tus datos:</div>
+      
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-icon">🔒</div>
+          <div class="rule-text"><strong>Protege tu privacidad:</strong> No facilites contraseñas, nombre completo ni teléfono.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">🔲</div>
+          <div class="rule-text"><strong>Peligro QR oculto:</strong> Un QR físico puede ser pegado encima del original para redirigirte a fraudes.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">📩</div>
+          <div class="rule-text"><strong>Cuidado con los desconocidos:</strong> Si no conoces el remitente de un SMS o correo, elimina el mensaje.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-icon">👥</div>
+          <div class="rule-text"><strong>Ante la duda, consulta:</strong> Avisa a un profesor, tutor o familiar si algo parece raro.</div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="location.reload()">
+          <span>↻</span> Volver a probar la simulación
+        </button>
+      </div>
+
     </div>
   </div>
 
