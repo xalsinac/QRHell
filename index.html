@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advertencia de Seguridad</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: #0f0;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Matrix canvas */
+    #matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.25;
+    }
+
+    /* Visual glitch & flicker overlay */
+    .screen-effects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+    }
+
+    /* Breach Container */
+    #breach-screen {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .alert-title {
+      font-size: 2.5rem;
+      color: #ff0033;
+      text-shadow: 0 0 10px #ff0033, 0 0 20px #ff0033;
+      margin-bottom: 15px;
+      animation: flash 0.8s infinite alternate;
+    }
+
+    @keyframes flash {
+      0% { opacity: 1; text-shadow: 0 0 10px #ff0033; }
+      100% { opacity: 0.3; text-shadow: 0 0 30px #ff0033, 0 0 50px #ff0033; }
+    }
+
+    .sub-title {
+      font-size: 1.2rem;
+      color: #ff3333;
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+    }
+
+    /* Terminal logs */
+    .terminal-window {
+      width: 100%;
+      max-width: 550px;
+      height: 140px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid #ff0033;
+      box-shadow: 0 0 15px rgba(255, 0, 51, 0.3);
+      border-radius: 4px;
+      padding: 12px;
+      text-align: left;
+      font-size: 0.85rem;
+      color: #ff4d4d;
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Progress bar */
+    .progress-container {
+      width: 100%;
+      max-width: 550px;
+      background: #111;
+      border: 1px solid #ff0033;
+      padding: 4px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(255, 0, 51, 0.4);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 22px;
+      background: linear-gradient(90deg, #ff0033, #ff6600);
+      box-shadow: 0 0 8px #ff0033;
+      transition: width 0.1s linear;
+    }
+
+    .progress-text {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #ff6600;
+    }
+
+    /* Blackout screen */
+    #blackout {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 10;
+      display: none;
+    }
+
+    /* Educational Reveal Screen */
+    #reveal-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f172a;
+      color: #f8fafc;
+      z-index: 20;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow-y: auto;
+    }
+
+    .reveal-card {
+      background: #1e293b;
+      border: 2px solid #3b82f6;
+      border-radius: 16px;
+      padding: 30px 20px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.2);
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .reveal-title {
+      font-size: 1.8rem;
+      color: #38bdf8;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .main-message {
+      font-size: 1.3rem;
+      line-height: 1.5;
+      color: #f1f5f9;
+      background: rgba(59, 130, 246, 0.1);
+      border-left: 4px solid #3b82f6;
+      padding: 15px;
+      margin: 20px 0;
+      text-align: left;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .rules-list {
+      text-align: left;
+      margin-top: 20px;
+      list-style: none;
+    }
+
+    .rules-list li {
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .rules-list li span {
+      color: #38bdf8;
+      font-weight: bold;
+    }
+
+    /* Screen Shake animation */
+    .shake {
+      animation: shake-anim 0.08s infinite;
+    }
+
+    @keyframes shake-anim {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-2px, 0px) rotate(-0.5deg); }
+      40% { transform: translate(1px, -1px) rotate(0.5deg); }
+      60% { transform: translate(-1px, 1px) rotate(0deg); }
+      80% { transform: translate(2px, -1px) rotate(0.5deg); }
+      100% { transform: translate(0px, 0px) rotate(0deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Matrix Background -->
+  <canvas id="matrix"></canvas>
+
+  <!-- Glitch Lines Overlay -->
+  <div class="screen-effects"></div>
+
+  <!-- Attack Simulation Screen -->
+  <div id="breach-screen">
+    <div class="alert-title">⚠️ ¡VIRUS LOADING! ⚠️</div>
+    <div class="sub-title">ACCEDIENDO AL DISPOSITIVO...</div>
+
+    <div class="terminal-window" id="terminal">
+      <div class="terminal-line">> Inicializando exploit remoto...</div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+    <div class="progress-text" id="progress-text">Infiltrando sistema: 0%</div>
+  </div>
+
+  <!-- Blackout Screen -->
+  <div id="blackout"></div>
+
+  <!-- Educational Reveal Screen -->
+  <div id="reveal-screen">
+    <div class="reveal-card">
+      <div class="reveal-icon">🛡️</div>
+      <div class="reveal-title">¡Mantén la calma! Esto es una simulación.</div>
+      
+      <div class="main-message">
+        <strong>Regla de Oro:</strong><br>
+        No entres a sitios web, enlaces ni descargues archivos de fuentes que no conozcas.
+      </div>
+
+      <ul class="rules-list">
+        <li><span>1.</span> <strong>Verifica la URL:</strong> Asegúrate de que la dirección web sea legítima antes de hacer clic.</li>
+        <li><span>2.</span> <strong>Cuidado con los QR:</strong> No escanees códigos QR pegados en sitios públicos o sin contexto claro.</li>
+        <li><span>3.</span> <strong>No des tus datos:</strong> Ninguna web segura te pedirá contraseñas o datos personales de forma repentina.</li>
+        <li><span>4.</span> <strong>Avisa a un adulto/profesor:</strong> Si ves algo raro en la pantalla, pide ayuda de inmediato.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Audio Synthesizer (Pure Web Audio API - No external MP3 files needed)
+    let audioCtx = null;
+
+    function playBeep(freq = 440, type = 'sawtooth', duration = 0.1) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Audio playback restricted by browser policy
+      }
+    }
+
+    // Matrix Rain Effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$%#@&';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0f0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 33);
+
+    // Terminal Attack Simulation Logs
+    const terminalLogs = [
+      "> Escaneando puertos abiertos...",
+      "> Vulnerabilidad detectada en navegador...",
+      "> Copiando lista de contactos...",
+      "> Accediendo a archivos temporales...",
+      "> Obteniendo tokens de sesión...",
+      "> Interceptando cámara frontal...",
+      "> Cifrando disco local...",
+      "> Enviando datos a servidor remoto..."
+    ];
+
+    const terminalEl = document.getElementById('terminal');
+    const progressBar = document.getElementById('progress');
+    const progressText = document.getElementById('progress-text');
+    const breachScreen = document.getElementById('breach-screen');
+    const blackoutEl = document.getElementById('blackout');
+    const revealScreen = document.getElementById('reveal-screen');
+
+    let currentProgress = 0;
+    let logIndex = 0;
+
+    // Trigger simulation start on any user interaction or auto-run
+    function startAudioOnTouch() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      window.removeEventListener('click', startAudioOnTouch);
+      window.removeEventListener('touchstart', startAudioOnTouch);
+    }
+    window.addEventListener('click', startAudioOnTouch);
+    window.addEventListener('touchstart', startAudioOnTouch);
+
+    const interval = setInterval(() => {
+      currentProgress += Math.floor(Math.random() * 4) + 1;
+      
+      if (currentProgress > 100) currentProgress = 100;
+
+      progressBar.style.width = currentProgress + '%';
+      progressText.innerText = 'Infiltrando sistema: ' + currentProgress + '%';
+
+      // Play hacker beep sound
+      playBeep(200 + currentProgress * 8, 'sawtooth', 0.05);
+
+      // Add terminal log message at intervals
+      if (currentProgress > (logIndex + 1) * (100 / terminalLogs.length) && logIndex < terminalLogs.length) {
+        const line = document.createElement('div');
+        line.className = 'terminal-line';
+        line.innerText = terminalLogs[logIndex];
+        terminalEl.appendChild(line);
+        terminalEl.scrollTop = terminalEl.scrollHeight;
+        logIndex++;
+      }
+
+      // Add visual screen shake at higher percentage
+      if (currentProgress > 60 && !breachScreen.classList.contains('shake')) {
+        breachScreen.classList.add('shake');
+      }
+
+      // Simulation Complete: Blackout -> Educational Reveal
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+        playBeep(150, 'square', 0.4);
+
+        // Step 1: 3-Second Pitch Black Suspense
+        setTimeout(() => {
+          breachScreen.style.display = 'none';
+          blackoutEl.style.display = 'block';
+
+          // Step 2: Educational Reveal
+          setTimeout(() => {
+            blackoutEl.style.display = 'none';
+            revealScreen.style.display = 'flex';
+          }, 3000);
+
+        }, 500);
+      }
+    }, 120);
+  </script>
+</body>
+</html>
