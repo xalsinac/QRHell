@@ -21,9 +21,33 @@
       user-select: none;
     }
 
+    /* Contenedor principal para aplicar el efecto CRT */
+    #hacker-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 1;
+      transform-origin: center center;
+    }
+
+    /* Efecto apagado de TV antigua */
+    .tv-off {
+      animation: crtOff 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    @keyframes crtOff {
+      0% { transform: scale(1, 1); filter: brightness(1); }
+      40% { transform: scale(1, 0.005); filter: brightness(15); background-color: #fff; }
+      70% { transform: scale(0.005, 0.005); filter: brightness(20); }
+      100% { transform: scale(0, 0); filter: brightness(0); opacity: 0; }
+    }
+
     /* Matrix canvas */
     #matrix {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
@@ -34,7 +58,7 @@
 
     /* Visual glitch overlay */
     .screen-effects {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
@@ -161,7 +185,7 @@
     }
 
     /* ========================================================
-       REVEAL SCREEN (Diseño Original de la Imagen) 
+       REVEAL SCREEN 
        ======================================================== */
     #reveal-screen {
       position: fixed;
@@ -169,7 +193,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #171717; /* Gris muy oscuro */
+      background-color: #171717; 
       color: #ffffff;
       z-index: 20;
       display: none;
@@ -328,31 +352,34 @@
 </head>
 <body>
 
-  <!-- Matrix Background -->
-  <canvas id="matrix"></canvas>
+  <!-- Contenedor general para animar el apagado -->
+  <div id="hacker-wrapper">
+    <!-- Matrix Background -->
+    <canvas id="matrix"></canvas>
 
-  <!-- Glitch Lines Overlay -->
-  <div class="screen-effects"></div>
+    <!-- Glitch Lines Overlay -->
+    <div class="screen-effects"></div>
 
-  <!-- Hacker Attack Screen -->
-  <div id="breach-screen">
-    <div class="alert-title">⚠️ ¡VIRUS LOADING! ⚠️</div>
-    <div class="sub-title">ACCEDIENDO AL DISPOSITIVO...</div>
+    <!-- Hacker Attack Screen -->
+    <div id="breach-screen">
+      <div class="alert-title">⚠️ ¡VIRUS LOADING! ⚠️</div>
+      <div class="sub-title">ACCEDIENDO AL DISPOSITIVO...</div>
 
-    <div class="terminal-window" id="terminal">
-      <div class="terminal-line">> Inicializando exploit remoto...</div>
+      <div class="terminal-window" id="terminal">
+        <div class="terminal-line">> Inicializando exploit remoto...</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+      <div class="progress-text" id="progress-text">Infiltrando sistema: 0%</div>
     </div>
-
-    <div class="progress-container">
-      <div class="progress-bar" id="progress"></div>
-    </div>
-    <div class="progress-text" id="progress-text">Infiltrando sistema: 0%</div>
   </div>
 
-  <!-- Blackout Screen (3 segundos de suspense) -->
+  <!-- Blackout Screen -->
   <div id="blackout"></div>
 
-  <!-- Pantalla Final Educativa (Igual a tu imagen) -->
+  <!-- Pantalla Final Educativa -->
   <div id="reveal-screen">
     <div class="reveal-content">
       
@@ -469,6 +496,7 @@
     const progressBar = document.getElementById('progress');
     const progressText = document.getElementById('progress-text');
     const breachScreen = document.getElementById('breach-screen');
+    const hackerWrapper = document.getElementById('hacker-wrapper');
     const blackoutEl = document.getElementById('blackout');
     const revealScreen = document.getElementById('reveal-screen');
 
@@ -483,13 +511,14 @@
     window.addEventListener('click', startAudioOnTouch);
     window.addEventListener('touchstart', startAudioOnTouch);
 
+    // Bucle principal: 100 ms por iteración (aprox. 8 segundos totales para llegar a 100%)
     const interval = setInterval(() => {
-      currentProgress += Math.floor(Math.random() * 4) + 1;
+      currentProgress += (Math.random() * 1.5 + 0.5); 
       
       if (currentProgress > 100) currentProgress = 100;
 
       progressBar.style.width = currentProgress + '%';
-      progressText.innerText = 'Infiltrando sistema: ' + currentProgress + '%';
+      progressText.innerText = 'Infiltrando sistema: ' + Math.floor(currentProgress) + '%';
 
       playBeep(200 + currentProgress * 8, 'sawtooth', 0.05);
 
@@ -506,22 +535,31 @@
         breachScreen.classList.add('shake');
       }
 
+      // Al completar el 100%
       if (currentProgress >= 100) {
         clearInterval(interval);
-        playBeep(150, 'square', 0.4);
+        
+        // Efecto sonoro de chispazo final
+        playBeep(800, 'sine', 0.1);
+        setTimeout(() => playBeep(100, 'square', 0.3), 100);
 
+        // Añadimos la clase CSS que hace el colapso tipo CRT
+        hackerWrapper.classList.add('tv-off');
+
+        // Esperamos 600ms (lo que dura la animación) antes de poner el fondo negro real
         setTimeout(() => {
-          breachScreen.style.display = 'none';
+          hackerWrapper.style.display = 'none';
           blackoutEl.style.display = 'block';
 
+          // Después de 3 segundos de suspense en negro, mostramos la tutoría
           setTimeout(() => {
             blackoutEl.style.display = 'none';
             revealScreen.style.display = 'flex';
           }, 3000);
 
-        }, 500);
+        }, 600);
       }
-    }, 120);
+    }, 100);
   </script>
 </body>
 </html>
