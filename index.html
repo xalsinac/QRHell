@@ -32,7 +32,7 @@
       opacity: 0.25;
     }
 
-    /* Visual glitch & flicker overlay */
+    /* Visual glitch overlay */
     .screen-effects {
       position: fixed;
       top: 0;
@@ -64,11 +64,12 @@
     }
 
     .alert-title {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       color: #ff0033;
       text-shadow: 0 0 10px #ff0033, 0 0 20px #ff0033;
       margin-bottom: 15px;
       animation: flash 0.8s infinite alternate;
+      font-weight: bold;
     }
 
     @keyframes flash {
@@ -77,7 +78,7 @@
     }
 
     .sub-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #ff3333;
       margin-bottom: 25px;
       letter-spacing: 2px;
@@ -91,7 +92,7 @@
       background: rgba(0, 0, 0, 0.85);
       border: 1px solid #ff0033;
       box-shadow: 0 0 15px rgba(255, 0, 51, 0.3);
-      border-radius: 4px;
+      border-radius: 6px;
       padding: 12px;
       text-align: left;
       font-size: 0.85rem;
@@ -114,7 +115,7 @@
       background: #111;
       border: 1px solid #ff0033;
       padding: 4px;
-      border-radius: 4px;
+      border-radius: 6px;
       box-shadow: 0 0 10px rgba(255, 0, 51, 0.4);
     }
 
@@ -124,12 +125,14 @@
       background: linear-gradient(90deg, #ff0033, #ff6600);
       box-shadow: 0 0 8px #ff0033;
       transition: width 0.1s linear;
+      border-radius: 3px;
     }
 
     .progress-text {
-      margin-top: 8px;
-      font-size: 0.9rem;
+      margin-top: 10px;
+      font-size: 0.95rem;
       color: #ff6600;
+      font-weight: bold;
     }
 
     /* Blackout screen */
@@ -168,10 +171,10 @@
       background: #1e293b;
       border: 2px solid #3b82f6;
       border-radius: 16px;
-      padding: 30px 20px;
+      padding: 35px 25px;
       max-width: 600px;
       width: 100%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.2);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.25);
       animation: fadeIn 1s ease-out;
     }
 
@@ -181,24 +184,24 @@
     }
 
     .reveal-icon {
-      font-size: 3rem;
+      font-size: 3.5rem;
       margin-bottom: 15px;
     }
 
     .reveal-title {
       font-size: 1.8rem;
       color: #38bdf8;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-weight: 700;
     }
 
     .main-message {
-      font-size: 1.3rem;
-      line-height: 1.5;
-      color: #f1f5f9;
-      background: rgba(59, 130, 246, 0.1);
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: #ffffff;
+      background: rgba(59, 130, 246, 0.15);
       border-left: 4px solid #3b82f6;
-      padding: 15px;
+      padding: 16px;
       margin: 20px 0;
       text-align: left;
       border-radius: 0 8px 8px 0;
@@ -211,12 +214,13 @@
     }
 
     .rules-list li {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       font-size: 0.95rem;
       color: #cbd5e1;
       display: flex;
       align-items: flex-start;
       gap: 10px;
+      line-height: 1.4;
     }
 
     .rules-list li span {
@@ -262,31 +266,31 @@
     <div class="progress-text" id="progress-text">Infiltrando sistema: 0%</div>
   </div>
 
-  <!-- Blackout Screen -->
+  <!-- Blackout Screen (3 segundos de suspense) -->
   <div id="blackout"></div>
 
-  <!-- Educational Reveal Screen -->
+  <!-- Educational Reveal Screen (Pantalla final limpia y colorida) -->
   <div id="reveal-screen">
     <div class="reveal-card">
       <div class="reveal-icon">🛡️</div>
-      <div class="reveal-title">¡Mantén la calma! Esto es una simulación.</div>
+      <div class="reveal-title">¡Tranquilidad! Es solo una simulación.</div>
       
       <div class="main-message">
-        <strong>Regla de Oro:</strong><br>
-        No entres a sitios web, enlaces ni descargues archivos de fuentes que no conozcas.
+        <strong>Consejo de Tutoría:</strong><br>
+        No entres a sitios web, enlaces ni escanees códigos QR de origen desconocido.
       </div>
 
       <ul class="rules-list">
-        <li><span>1.</span> <strong>Verifica la URL:</strong> Asegúrate de que la dirección web sea legítima antes de hacer clic.</li>
-        <li><span>2.</span> <strong>Cuidado con los QR:</strong> No escanees códigos QR pegados en sitios públicos o sin contexto claro.</li>
-        <li><span>3.</span> <strong>No des tus datos:</strong> Ninguna web segura te pedirá contraseñas o datos personales de forma repentina.</li>
-        <li><span>4.</span> <strong>Avisa a un adulto/profesor:</strong> Si ves algo raro en la pantalla, pide ayuda de inmediato.</li>
+        <li><span>1.</span> <strong>Verifica la URL:</strong> Comprueba siempre la dirección web antes de hacer clic o introducir datos.</li>
+        <li><span>2.</span> <strong>Cuidado con los QR:</strong> No escanees códigos colgados en la calle o compartidos sin contexto confiable.</li>
+        <li><span>3.</span> <strong>Protege tus datos:</strong> Ninguna página legítima te pedirá contraseñas de forma imprevista.</li>
+        <li><span>4.</span> <strong>Pide ayuda:</strong> Si dudas de la seguridad de un sitio, consúltalo con un profesor o adulto de confianza.</li>
       </ul>
     </div>
   </div>
 
   <script>
-    // Audio Synthesizer (Pure Web Audio API - No external MP3 files needed)
+    // Audio Synthesizer (Web Audio API)
     let audioCtx = null;
 
     function playBeep(freq = 440, type = 'sawtooth', duration = 0.1) {
@@ -304,9 +308,7 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch (e) {
-        // Audio playback restricted by browser policy
-      }
+      } catch (e) {}
     }
 
     // Matrix Rain Effect
@@ -342,7 +344,7 @@
     }
     setInterval(drawMatrix, 33);
 
-    // Terminal Attack Simulation Logs
+    // Terminal attack log lines
     const terminalLogs = [
       "> Escaneando puertos abiertos...",
       "> Vulnerabilidad detectada en navegador...",
@@ -364,11 +366,8 @@
     let currentProgress = 0;
     let logIndex = 0;
 
-    // Trigger simulation start on any user interaction or auto-run
     function startAudioOnTouch() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       window.removeEventListener('click', startAudioOnTouch);
       window.removeEventListener('touchstart', startAudioOnTouch);
     }
@@ -383,10 +382,8 @@
       progressBar.style.width = currentProgress + '%';
       progressText.innerText = 'Infiltrando sistema: ' + currentProgress + '%';
 
-      // Play hacker beep sound
       playBeep(200 + currentProgress * 8, 'sawtooth', 0.05);
 
-      // Add terminal log message at intervals
       if (currentProgress > (logIndex + 1) * (100 / terminalLogs.length) && logIndex < terminalLogs.length) {
         const line = document.createElement('div');
         line.className = 'terminal-line';
@@ -396,22 +393,18 @@
         logIndex++;
       }
 
-      // Add visual screen shake at higher percentage
       if (currentProgress > 60 && !breachScreen.classList.contains('shake')) {
         breachScreen.classList.add('shake');
       }
 
-      // Simulation Complete: Blackout -> Educational Reveal
       if (currentProgress >= 100) {
         clearInterval(interval);
         playBeep(150, 'square', 0.4);
 
-        // Step 1: 3-Second Pitch Black Suspense
         setTimeout(() => {
           breachScreen.style.display = 'none';
           blackoutEl.style.display = 'block';
 
-          // Step 2: Educational Reveal
           setTimeout(() => {
             blackoutEl.style.display = 'none';
             revealScreen.style.display = 'flex';
